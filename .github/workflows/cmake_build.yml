@@ -26,19 +26,23 @@ jobs:
         run: git submodule update --init --recursive
 
       - name: Build Debug
+        working-directory: ${{github.workspace}}/telem-in-a-box
         run: |
-          cmake ../.. -DCMAKE_BUILD_TYPE=Debug
+          cmake -B . -DCMAKE_BUILD_TYPE=Debug
           cmake --build .
       - name: Upload Debug Build
         uses: actions/upload-artifact@v3
         with:
           name: debug-build
+          path: ${{github.workspace}}/telem-in-a-box/elf2uf2
 
       - name: Build Release
+        working-directory: ${{github.workspace}}/telem-in-a-box
         run: |
-          cmake ../.. -DCMAKE_BUILD_TYPE=Release
+          cmake -B . -DCMAKE_BUILD_TYPE=Release
           cmake --build .
       - name: Upload Release Build
         uses: actions/upload-artifact@v3
         with:
           name: release-build
+          path: ${{github.workspace}}/telem-in-a-box/elf2uf2
