@@ -12,7 +12,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: Cache Submodules
+
+      - name: Cache Submodules (Before)
         uses: actions/cache@v4
         with:
           path: |
@@ -20,16 +21,26 @@ jobs:
           key: ${{ runner.os }}-submodules-${{ hashFiles('**/.gitmodules') }}
           restore-keys: |
             ${{ runner.os }}-submodules-
+
       - name: Checkout submodules
         if: steps.cache-submodules.outputs.cache-hit != 'true'
         working-directory: ${{github.workspace}}/telem-in-a-box
         run: git submodule update --init --recursive
 
+      - name: Cache Submodules (After)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{github.workspace}}/telem-in-a-box/include
+          key: ${{ runner.os }}-submodules-${{ hashFiles('**/.gitmodules') }}
+          restore-keys: |
+            ${{ runner.os }}-submodules-
+
       - name: Build Debug
         working-directory: ${{github.workspace}}/telem-in-a-box
         run: |
-          cmake -B . -DCMAKE_BUILD_TYPE=Debug
-          cmake --build .
+          cmake -B build -DCMAKE_BUILD_TYPE=Debug
+          cmake --build build
       - name: Upload Debug Build
         uses: actions/upload-artifact@v3
         with:
@@ -39,8 +50,8 @@ jobs:
       - name: Build Release
         working-directory: ${{github.workspace}}/telem-in-a-box
         run: |
-          cmake -B . -DCMAKE_BUILD_TYPE=Release
-          cmake --build .
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build
       - name: Upload Release Build
         uses: actions/upload-artifact@v3
         with:
