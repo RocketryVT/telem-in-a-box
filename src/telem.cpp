@@ -1,5 +1,6 @@
 // https://github.com/stephendade/mav_rp2040/blob/main/c/main.c
 
+#include <string>
 #include <stdio.h>
 #include <stdlib.h>
 

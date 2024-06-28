@@ -1,17 +1,17 @@
 cmake_minimum_required(VERSION 3.20)
-
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(PICO_BOARD pico_w)
 # Pull in SDK (must be before project)
 include(include/pico-sdk/pico_sdk_init.cmake)
-include_directories(include/eigen)
+# include_directories(include/eigen)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_C_COMPILER arm-none-eabi-gcc)
 set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
 
-project(telem C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
+
+project(telem C CXX ASM)
 
 if (PICO_SDK_VERSION_STRING VERSION_LESS "1.3.0")
     message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.3.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
@@ -22,7 +22,6 @@ pico_sdk_init()
 
 add_subdirectory(src)
 add_subdirectory(tools)
-
 
 add_compile_options(-Wall
         -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int
