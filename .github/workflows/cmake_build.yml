@@ -24,20 +24,7 @@ jobs:
         if: steps.cache-submodules.outputs.cache-hit != 'true'
         working-directory: ${{github.workspace}}/telem-in-a-box
         run: git submodule update --init --recursive
-      - name: Upload repository as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: repo-artifact
-          path: ${{github.workspace}}/telem-in-a-box
 
-  build-debug:
-    needs: setup-repo
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download repository artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: repo-artifact
       - name: Build Debug
         run: |
           cmake ../.. -DCMAKE_BUILD_TYPE=Debug
@@ -47,14 +34,6 @@ jobs:
         with:
           name: debug-build
 
-  build-release:
-    needs: setup-repo
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download repository artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: repo-artifact
       - name: Build Release
         run: |
           cmake ../.. -DCMAKE_BUILD_TYPE=Release
