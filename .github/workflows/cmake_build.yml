@@ -7,9 +7,12 @@ env:
   CMAKE_VERSION: 3.20.0
 
 jobs:
-  setup-repo:
+  Build_Release_and_Debug:
     runs-on: ubuntu-latest
     steps:
+      - name: Install Dependencies
+        run: sudo apt-get install -y cmake ninja build-essential gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
+
       - name: Check out repository code
         uses: actions/checkout@v4
 
